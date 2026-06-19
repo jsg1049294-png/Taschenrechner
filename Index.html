@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alessio Calculator Pro</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Segoe UI,sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#0f172a,#1e293b);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.calculator{
+    width:380px;
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(15px);
+    border-radius:25px;
+    padding:20px;
+    box-shadow:0 0 40px rgba(0,0,0,.5);
+}
+
+h1{
+    color:white;
+    text-align:center;
+    margin-bottom:15px;
+}
+
+#display{
+    width:100%;
+    height:80px;
+    border:none;
+    border-radius:15px;
+    font-size:32px;
+    text-align:right;
+    padding:15px;
+    margin-bottom:15px;
+    background:#111827;
+    color:#00ff88;
+}
+
+.buttons{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+}
+
+button{
+    height:65px;
+    border:none;
+    border-radius:15px;
+    font-size:22px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+button:hover{
+    transform:scale(1.05);
+}
+
+.num{
+    background:#1f2937;
+    color:white;
+}
+
+.op{
+    background:#2563eb;
+    color:white;
+}
+
+.eq{
+    background:#22c55e;
+    color:white;
+}
+
+.clear{
+    background:#ef4444;
+    color:white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="calculator">
+<h1>⚡ Alessio Calculator Pro ⚡</h1>
+
+<input type="text" id="display" readonly>
+
+<div class="buttons">
+<button class="clear" onclick="clearDisplay()">C</button>
+<button class="op" onclick="add('(')">(</button>
+<button class="op" onclick="add(')')">)</button>
+<button class="op" onclick="del()">⌫</button>
+
+<button class="num" onclick="add('7')">7</button>
+<button class="num" onclick="add('8')">8</button>
+<button class="num" onclick="add('9')">9</button>
+<button class="op" onclick="add('/')">÷</button>
+
+<button class="num" onclick="add('4')">4</button>
+<button class="num" onclick="add('5')">5</button>
+<button class="num" onclick="add('6')">6</button>
+<button class="op" onclick="add('*')">×</button>
+
+<button class="num" onclick="add('1')">1</button>
+<button class="num" onclick="add('2')">2</button>
+<button class="num" onclick="add('3')">3</button>
+<button class="op" onclick="add('-')">−</button>
+
+<button class="num" onclick="add('0')">0</button>
+<button class="num" onclick="add('.')">.</button>
+<button class="eq" onclick="calculate()">=</button>
+<button class="op" onclick="add('+')">+</button>
+</div>
+</div>
+
+<script>
+const display = document.getElementById("display");
+
+function add(value){
+    display.value += value;
+}
+
+function clearDisplay(){
+    display.value = "";
+}
+
+function del(){
+    display.value = display.value.slice(0,-1);
+}
+
+function calculate(){
+    try{
+        display.value = Function('"use strict";return (' + display.value + ')')();
+    }catch{
+        display.value = "Fehler";
+    }
+}
+</script>
+
+</body>
+</html>
