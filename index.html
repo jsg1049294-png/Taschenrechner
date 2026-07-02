@@ -95,13 +95,13 @@ let currentUser = "", isAdmin = false;
 
 // YouTube Videos
 const youtubeVideos = {
-  1: { id: "q7c05ejJ6Sw", title: "YouTube Video 1" },
-  2: { id: "Aq5WXmQQooo?si=7QNoeb33c4GFyz5e", title: "Rick Astley" },
+  1: { id: "q7c05ejJ6Sw", title: "Video 1" },
+  2: { id: "dQw4w9wgxcq", title: "Rick Astley" },
   3: { id: "zG9nSL2jbyw", title: "Video 3" },
   4: { id: "VqPgrNYPHU8", title: "Video 4" },
   5: { id: "_i6rYe4HLPw", title: "Video 5" },
   6: { id: "o_4PPHaDum4", title: "AURA" },
-  7: { id: "oddleN98bgE?si=h02u-vqjHoDx-djW", title: "herr schlott" }
+  7: { id: "oddleN98bgE", title: "herr schlott" }
 };
 
 window.onload = () => {
@@ -156,95 +156,34 @@ async function sendMessage() {
   if (!text) return;
   const lower = text.toLowerCase().trim();
 
-  if (lower === "/my") { openIframe("https://www.myinstants.com/de/index/de/", "My Instants"); input.value = ""; return; }
+  if (lower === "/my") {
+    openIframe("https://www.myinstants.com/de/index/de/", "My Instants");
+    input.value = ""; return;
+  }
   if (lower.startsWith("/sr")) {
     const parts = text.split(/\s+/);
     let num = 1;
     if (parts.length > 1 && !isNaN(parseInt(parts[1]))) num = parseInt(parts[1]);
     const video = youtubeVideos[num] || youtubeVideos[1];
-    openIframe(`https://www.youtube.com/embed/${video.id}?autoplay=1`, video.title);
+    openIframe(`https://www.youtube.com/embed/${video.id}?autoplay=1&rel=0`, video.title);
     input.value = ""; return;
   }
-  if (lower === "/ki") { openIframe("ki.html", "KI Assistant"); input.value = ""; return; }
-  if (lower === "/calc") { openIframe("data:text/html," + encodeURIComponent(getCalculatorHTML()), "🧮 Calculator Pro"); input.value = ""; return; }
+  if (lower === "/ki") {
+    openIframe("ki.html", "KI Assistant");
+    input.value = ""; return;
+  }
+  if (lower === "/calc") {
+    openIframe("calculator.html", "🧮 Calculator Pro");
+    input.value = ""; return;
+  }
 
   // Normale Nachricht
-  await db.collection("messages").add({ user: currentUser, text: text, time: Date.now() });
+  await db.collection("messages").add({
+    user: currentUser,
+    text: text,
+    time: Date.now()
+  });
   input.value = "";
-}
-
-function getCalculatorHTML() {
-  return `<!DOCTYPE html>
-<html lang="de">
-<head><meta charset="UTF-8"><title>Calculator</title>
-<style>
-body{margin:0;padding:0;height:100vh;background:#0a0a0f;display:flex;justify-content:center;align-items:center;font-family:'Syne',sans-serif;}
-.calc{background:#12121a;padding:25px;border-radius:24px;width:380px;box-shadow:0 20px 50px rgba(0,0,0,0.7);border:1px solid #2a2a40;}
-h2{color:#00ff88;text-align:center;margin-bottom:20px;}
-#display{width:100%;height:90px;background:#1a1a26;border:none;border-radius:16px;color:white;font-size:2.5rem;text-align:right;padding:0 20px;margin-bottom:20px;}
-.buttons{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
-button{height:70px;border:none;border-radius:16px;font-size:1.6rem;cursor:pointer;transition:all 0.2s;}
-button:hover{transform:scale(1.08);}
-.num{background:#2a2a40;color:white;}
-.op{background:#1e3a5f;color:#00ddff;}
-.eq{background:#00ff88;color:black;font-weight:bold;}
-.clear{background:#ff3366;color:white;}
-</style>
-</head>
-<body>
-<div class="calc">
-  <h2>🧮 Calculator Pro</h2>
-  <input type="text" id="display" readonly>
-  <div class="buttons">
-    <button class="clear" onclick="clearDisplay()">C</button>
-    <button class="op" onclick="add('(')">(</button>
-    <button class="op" onclick="add(')')">)</button>
-    <button class="op" onclick="backspace()">⌫</button>
-    <button class="num" onclick="add('7')">7</button>
-    <button class="num" onclick="add('8')">8</button>
-    <button class="num" onclick="add('9')">9</button>
-    <button class="op" onclick="add('/')">÷</button>
-    <button class="num" onclick="add('4')">4</button>
-    <button class="num" onclick="add('5')">5</button>
-    <button class="num" onclick="add('6')">6</button>
-    <button class="op" onclick="add('*')">×</button>
-    <button class="num" onclick="add('1')">1</button>
-    <button class="num" onclick="add('2')">2</button>
-    <button class="num" onclick="add('3')">3</button>
-    <button class="op" onclick="add('-')">−</button>
-    <button class="num" onclick="add('0')">0</button>
-    <button class="num" onclick="add('.')">.</button>
-    <button class="op" onclick="add('+')">+</button>
-    <button class="eq" onclick="calculate()">=</button>
-  </div>
-</div>
-<script>
-const display = document.getElementById("display");
-function add(v){display.value += v;}
-function clearDisplay(){display.value = "";}
-function backspace(){display.value = display.value.slice(0,-1);}
-function calculate(){
-  const expr = display.value.trim();
-  if(expr === "2+4)6"){
-    window.parent.postMessage({action:"openGlobalChat"},"*");
-    display.value = "Chat wird geöffnet...";
-    setTimeout(()=>display.value="",1500);
-    return;
-  }
-  try{
-    display.value = eval(expr.replace(/×/g,'*').replace(/÷/g,'/'));
-  }catch(e){
-    display.value = "Fehler";
-    setTimeout(()=>display.value="",1500);
-  }
-}
-document.addEventListener("keydown", e=>{
-  if(e.key==="Enter") calculate();
-  if(e.key==="Escape") clearDisplay();
-  if(e.key==="Backspace") backspace();
-});
-</script>
-</body></html>`;
 }
 
 function openIframe(url, title) {
@@ -259,7 +198,10 @@ function closeIframe() {
 }
 
 function handleKey(e) {
-  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
 }
 
 function logout() { location.reload(); }
@@ -269,12 +211,11 @@ function confirmClearAll() {
   }
 }
 
-// Message Listener für den Calculator
+// === WICHTIG: Listener für den Calculator ===
 window.addEventListener("message", (event) => {
   if (event.data.action === "openGlobalChat") {
     closeIframe();
-    // Chat neu laden
-    setTimeout(() => location.reload(), 300);
+    setTimeout(() => location.reload(), 500);
   }
 });
 </script>
