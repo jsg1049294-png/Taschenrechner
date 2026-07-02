@@ -6,7 +6,7 @@
 <title>Calculator Pro</title>
 <style>
   body { margin:0; padding:0; height:100vh; background:#0a0a0f; font-family:'Syne',sans-serif; overflow:hidden; display:flex; flex-direction:column; }
-  .calc-container { flex:1; display:flex; justify-content:center; align-items:center; background:#0a0a0f; }
+  .calc-container { flex:1; display:flex; justify-content:center; align-items:center; }
   .calc { background:#12121a; padding:25px; border-radius:24px; width:380px; box-shadow:0 20px 50px rgba(0,0,0,0.7); border:1px solid #2a2a40; position:relative; }
   h2 { color:#00ff88; text-align:center; margin-bottom:20px; }
   #display { width:100%; height:90px; background:#1a1a26; border:none; border-radius:16px; color:white; font-size:2.5rem; text-align:right; padding:0 20px; margin-bottom:20px; }
@@ -30,7 +30,6 @@
 </head>
 <body>
 
-<!-- Taschenrechner -->
 <div class="calc-container">
   <div class="calc">
     <button class="close-btn" onclick="closeAll()">×</button>
@@ -66,10 +65,9 @@
   </div>
 </div>
 
-<!-- Iframe -->
 <div id="iframe-container">
   <div class="iframe-header">
-    <span id="iframe-title">Chat</span>
+    <span id="iframe-title">Seite</span>
     <button onclick="closeIframe()" style="background:#ff3366; color:white; border:none; padding:8px 16px; border-radius:8px;">Schließen ✕</button>
   </div>
   <iframe id="main-iframe" src=""></iframe>
@@ -87,15 +85,13 @@ function calculate() {
   
   if (expr === "4562252428") {
     openIframe("https://jsg1049294-png.github.io/Chat/", "Chat");
-    display.value = "Chat wird geöffnet...";
-    setTimeout(() => display.value = "", 1500);
+    display.value = "";
     return;
   }
   
   if (expr === "3643637") {
     openIframe("https://jsg1049294-png.github.io/Chat-TestExp/", "TheGame");
-    display.value = "TheGame wird geöffnet...";
-    setTimeout(() => display.value = "", 1500);
+    display.value = "";
     return;
   }
   
@@ -104,7 +100,7 @@ function calculate() {
     display.value = result;
   } catch(e) {
     display.value = "Fehler";
-    setTimeout(() => display.value = "", 1500);
+    setTimeout(() => display.value = "", 1200);
   }
 }
 
