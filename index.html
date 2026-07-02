@@ -65,12 +65,13 @@
   </div>
 </div>
 
+<!-- Iframe -->
 <div id="iframe-container">
   <div class="iframe-header">
-    <span id="iframe-title">Seite</span>
+    <span id="iframe-title">Game</span>
     <button onclick="closeIframe()" style="background:#ff3366; color:white; border:none; padding:8px 16px; border-radius:8px;">Schließen ✕</button>
   </div>
-  <iframe id="main-iframe" src=""></iframe>
+  <iframe id="main-iframe" src="" width="100%" height="100%" frameborder="0" allow="fullscreen; gamepad;" sandbox="allow-scripts allow-same-origin allow-pointer-lock"></iframe>
 </div>
 
 <script>
@@ -91,6 +92,12 @@ function calculate() {
   
   if (expr === "3643637") {
     openIframe("https://jsg1049294-png.github.io/Chat-TestExp/", "TheGame");
+    display.value = "";
+    return;
+  }
+  
+  if (expr === "26102012") {
+    openIframe("https://gamedistribution.com", "Games");
     display.value = "";
     return;
   }
